@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shivam AI - The Ultimate AI Studio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            --bg-color: #020617;
+            --surface: rgba(30, 41, 59, 0.4);
+            --surface-hover: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(255, 255, 255, 0.2);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #8b5cf6;
+            --primary-glow: rgba(139, 92, 246, 0.5);
+            --secondary: #3b82f6;
+            --secondary-glow: rgba(59, 130, 246, 0.5);
+            --accent: #ec4899;
+            --success: #10b981;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: var(--surface-hover); border-radius: 10px; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+        }
+
+        /* Background Glowing Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .orb-1 { top: -10%; left: -5%; width: 400px; height: 400px; background: var(--primary); }
+        .orb-2 { bottom: -10%; right: -5%; width: 500px; height: 500px; background: var(--secondary); animation-delay: -5s; }
+        .orb-3 { top: 40%; left: 40%; width: 300px; height: 300px; background: var(--accent); opacity: 0.2; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
+        }
+
+        /* Utility Classes */
+        .glass {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 25px var(--secondary-glow);
+        }
+        
+        /* Layout */
+        .sidebar {
+            width: 280px;
+            height: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            border-right: 1px solid var(--border);
+            background: rgba(2, 6, 23, 0.7);
+            backdrop-filter: blur(20px);
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        .brand i {
+            color: var(--primary);
+            -webkit-text-fill-color: var(--primary);
+            filter: drop-shadow(0 0 8px var(--primary-glow));
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.15), transparent);
+            border: 1px solid var(--border-highlight);
+            color: var(--text-main);
+            box-shadow: inset 4px 0 0 var(--primary);
+        }
+
+        .nav-item i { font-size: 1.2rem; width: 24px; text-align: center; }
+
+        .sidebar-footer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 24px;
+            animation: fadeIn 0.4s ease-out;
+            flex-direction: column;
+        }
+        .section.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Top Header Area for generators */
+        .section-header {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title i { color: var(--primary); }
+
+        /* Controls Row */
+        .controls-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .control-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+        select, input[type="text"], textarea {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+        select:focus, input[type="text"]:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+        }
+
+        /* Input Areas */
+        .input-box {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .input-box textarea {
+            flex-grow: 1;
+            resize: none;
+            height: 60px;
+            border-radius: var(--radius-md);
+        }
+
+        /* CHAT UI */
+        .chat-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            display: flex;
+            gap: 16px;
+            max-width: 85%;
+            animation: slideUp 0.3s ease-out;
+        }
+        .message.user { align-self: flex-end; flex-direction: row-reverse; }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+        .message.user .avatar { background: linear-gradient(135deg, var(--secondary), var(--primary)); border: none; }
+        
+        .msg-content {
+            background: var(--surface);
+            padding: 16px 20px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            line-height: 1.6;
+            position: relative;
+        }
+        .message.user .msg-content {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.2);
+            border-bottom-right-radius: 4px;
+        }
+        .message.ai .msg-content {
+            border-bottom-left-radius: 4px;
+        }
+        
+        .msg-actions {
+            position: absolute;
+            bottom: -30px;
+            right: 0;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .message.ai:hover .msg-actions { opacity: 1; }
+        
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            transition: var(--transition);
+        }
+        .action-btn:hover { color: var(--text-main); }
+
+        .chat-input-wrapper {
+            position: relative;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            padding: 10px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            backdrop-filter: blur(20px);
+        }
+        .chat-input-wrapper textarea {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            height: 44px;
+            max-height: 150px;
+            padding: 10px 14px;
+            resize: none;
+        }
+        .chat-input-wrapper textarea:focus { box-shadow: none; }
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Image & Video Results */
+        .result-area {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            background: rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+        }
+        .result-image, .result-video {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: var(--radius-md);
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: opacity 0.5s ease;
+        }
+        
+        .placeholder-text {
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+        }
+        .placeholder-text i { font-size: 2.5rem; opacity: 0.5; }
+
+        .download-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            z-index: 10;
+        }
+
+        /* Loading Animations */
+        .loader-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            position: absolute;
+            z-index: 5;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .progress-bar-container {
+            width: 200px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+            display: none;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 4px 8px;
+        }
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* Audio Player Custom */
+        .audio-player {
+            width: 100%;
+            max-width: 600px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .play-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+        .waveform {
+            flex-grow: 1;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .bar {
+            flex: 1;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            height: 4px;
+            transition: height 0.1s ease;
+        }
+        .bar.active { background: var(--secondary); animation: wave 1s infinite alternate; }
+        @keyframes wave { 0% { height: 4px; } 100% { height: 100%; } }
+
+        /* Video Simulation FX */
+        .video-sim-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            display: none;
+        }
+        .video-sim-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: kenBurns 15s infinite alternate ease-in-out;
+        }
+        .video-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        .play-icon-overlay {
+            font-size: 4rem;
+            color: rgba(255,255,255,0.7);
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+        }
+
+        @keyframes kenBurns {
+            0% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(1.1) translate(-2%, 2%); }
+            100% { transform: scale(1.05) translate(2%, -2%); }
+        }
+
+        /* Mobile Responsive */
+        .mobile-menu-btn {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                padding: 12px;
+                position: fixed;
+                bottom: 0;
+                border-right: none;
+                border-top: 1px solid var(--border);
+                justify-content: space-around;
+                z-index: 50;
+            }
+            .brand, .sidebar-footer { display: none; }
+            .nav-menu { flex-direction: row; justify-content: space-around; width: 100%; }
+            .nav-item { flex-direction: column; gap: 4px; padding: 8px; font-size: 0.75rem; }
+            .nav-item.active { box-shadow: inset 0 4px 0 var(--primary); border: none; background: rgba(255,255,255,0.05); }
+            .main-content { padding-bottom: 70px; }
+            .section { padding: 16px; }
+            .message { max-width: 95%; }
+            .controls-row { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar glass">
+        <div class="brand">
+            <i class="fa-solid fa-microchip"></i> Shivam AI
+        </div>
+        
+        <div class="nav-menu">
+            <div class="nav-item active" data-target="chat-section">
+                <i class="fa-solid fa-message"></i> <span>AI Chat</span>
+            </div>
+            <div class="nav-item" data-target="image-section">
+                <i class="fa-solid fa-image"></i> <span>Image Gen</span>
+            </div>
+            <div class="nav-item" data-target="video-section">
+                <i class="fa-solid fa-video"></i> <span>Video Gen</span>
+            </div>
+            <div class="nav-item" data-target="audio-section">
+                <i class="fa-solid fa-microphone-lines"></i> <span>Voice AI</span>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            Free & Unlimited UI<br>v2.0 Premium
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- 1. CHAT SECTION -->
+        <section id="chat-section" class="section active">
+            <div class="section-header">
+                <div class="section-title"><i class="fa-solid fa-message"></i> Assistant</div>
+                <div class="controls-row" style="margin:0;">
+                    <button class="btn" id="clear-chat"><i class="fa-solid fa-trash-can"></i> Clear</button>
+                    <select id="chat-model" class="glass">
+                        <option value="openai">OpenAI (GPT-4)</option>
+                        <option value="mistral">Mistral AI</option>
+                        <option value="llama">Llama 3</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="chat-container" id="chat-box">
+                <!-- Welcome Message -->
+                <div class="message ai">
+                    <div class="avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div class="msg-content">
+                        Hello! I am Shivam AI, your ultra-advanced virtual assistant. How can I help you create today?
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-wrapper">
+                <textarea id="chat-input" placeholder="Message Shivam AI..." rows="1"></textarea>
+                <button class="btn btn-primary send-btn" id="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </section>
+
+
+        <!-- 2. IMAGE SECTION -->
+        <section id="image-section" class="section">
+            <div class="section-header">
+                <div class="section-title"><i class="fa-solid fa-image"></i> Image Studio</div>
+            </div>
+            
+            <div class="controls-row">
+                <div class="control-group">
+                    <label>Aspect Ratio</label>
+                    <select id="img-ratio">
+                        <option value="1:1">1:1 (Square)</option>
+                        <option value="16:9">16:9 (Landscape)</option>
+                        <option value="9:16">9:16 (Portrait)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Quality</label>
+                    <select id="img-quality">
+                        <option value="hd">HD Quality</option>
+                        <option value="4k">4K Ultra HD</option>
+                        <option value="8k">8K Masterpiece</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <textarea id="img-prompt" placeholder="Describe the image you want to generate in detail... (e.g., A futuristic cyberpunk city at night with neon lights)"></textarea>
+                <button class="btn btn-primary" id="generate-img" style="border-radius: var(--radius-md); padding: 0 30px;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Generate
+                </button>
+            </div>
+
+            <div class="result-area glass">
+                <div class="placeholder-text" id="img-placeholder">
+                    <i class="fa-regular fa-image"></i>
+                    Your masterpiece will appear here
+                </div>
+                
+                <div class="loader-container" id="img-loader">
+                    <div class="spinner"></div>
+                    <div>Synthesizing Pixels...</div>
+                </div>
+
+                <img id="result-img" class="result-image" alt="Generated AI Image">
+                <button class="btn btn-primary download-btn" id="download-img"><i class="fa-solid fa-download"></i> Download 4K</button>
+            </div>
+        </section>
+
+
+        <!-- 3. VIDEO SECTION -->
+        <section id="video-section" class="section">
+            <div class="section-header">
+                <div class="section-title"><i class="fa-solid fa-video"></i> Video Studio</div>
+            </div>
+
+            <div class="input-box">
+                <textarea id="video-prompt" placeholder="Describe the video scene... (e.g., Cinematic drone shot of a misty mountain range)"></textarea>
+                <button class="btn btn-primary" id="generate-video" style="border-radius: var(--radius-md); padding: 0 30px;">
+                    <i class="fa-solid fa-film"></i> Generate
+                </button>
+            </div>
+
+            <div class="result-area glass">
+                <div class="placeholder-text" id="video-placeholder">
+                    <i class="fa-solid fa-clapperboard"></i>
+                    AI Video rendering engine ready
+                </div>
+                
+                <div class="loader-container" id="video-loader">
+                    <div class="spinner"></div>
+                    <div id="video-status">Analyzing Scene...</div>
+                    <div class="progress-bar-container" style="display: block;">
+                        <div class="progress-bar" id="video-progress"></div>
+                    </div>
+                </div>
+
+                <div class="video-sim-container" id="video-result">
+                    <img id="video-sim-img" class="video-sim-img">
+                    <div class="video-overlay">
+                        <i class="fa-solid fa-play play-icon-overlay"></i>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary download-btn" id="download-video"><i class="fa-solid fa-download"></i> Download Video Frame</button>
+            </div>
+        </section>
+
+
+        <!-- 4. AUDIO SECTION -->
+        <section id="audio-section" class="section">
+            <div class="section-header">
+                <div class="section-title"><i class="fa-solid fa-microphone-lines"></i> Voice AI</div>
+            </div>
+
+            <div class="controls-row">
+                <div class="control-group">
+                    <label>Voice Model</label>
+                    <select id="voice-model">
+                        <option value="Matthew">Matthew (Male - Deep)</option>
+                        <option value="Brian">Brian (Male - British)</option>
+                        <option value="Amy">Amy (Female - British)</option>
+                        <option value="Emma">Emma (Female - Warm)</option>
+                        <option value="Raveena">Raveena (Female - Indian)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <textarea id="audio-prompt" placeholder="Type the text you want to convert to highly realistic speech..."></textarea>
+                <button class="btn btn-primary" id="generate-audio" style="border-radius: var(--radius-md); padding: 0 30px;">
+                    <i class="fa-solid fa-waveform-lines"></i> Synthesize
+                </button>
+            </div>
+
+            <div class="result-area glass" style="flex-direction: column; border:none; background:transparent;">
+                <div class="loader-container" id="audio-loader" style="position: relative; margin-top: 40px;">
+                    <div class="spinner"></div>
+                    <div>Generating Neural Audio...</div>
+                </div>
+
+                <div class="audio-player" id="audio-player">
+                    <div class="audio-controls">
+                        <button class="play-btn" id="audio-play-btn"><i class="fa-solid fa-play"></i></button>
+                        <div class="waveform" id="waveform">
+                            <!-- Bars generated by JS -->
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                        <span style="font-size: 0.85rem; color: var(--text-muted);">StreamElements TTS Engine</span>
+                        <button class="btn" id="download-audio"><i class="fa-solid fa-download"></i> Save Audio</button>
+                    </div>
+                    <audio id="real-audio" style="display: none;"></audio>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- TAB NAVIGATION LOGIC ---
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.section');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Remove active from all
+                    navItems.forEach(n => n.classList.remove('active'));
+                    sections.forEach(s => s.classList.remove('active'));
+                    
+                    // Add active to clicked
+                    item.classList.add('active');
+                    const targetId = item.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // --- UTILITY FUNCTIONS ---
+            async function downloadBlob(url, filename) {
+                try {
+                    const response = await fetch(url);
+                    const blob = await response.blob();
+                    const objectUrl = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = objectUrl;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(objectUrl);
+                } catch (error) {
+                    console.error("Download failed:", error);
+                    alert("Failed to download. Opening in new tab instead.");
+                    window.open(url, '_blank');
+                }
+            }
+
+
+            // --- 1. CHAT SYSTEM LOGIC ---
+            const chatBox = document.getElementById('chat-box');
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const clearChatBtn = document.getElementById('clear-chat');
+            const chatModel = document.getElementById('chat-model');
+
+            let chatHistory =[]; // For contextual conversation (if API supports, currently using single prompt for stability)
+
+            // Auto-resize textarea
+            chatInput.addEventListener('input', function() {
+                this.style.height = '44px';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleChat();
+                }
+            });
+
+            sendBtn.addEventListener('click', handleChat);
+            clearChatBtn.addEventListener('click', () => {
+                chatBox.innerHTML = `
+                    <div class="message ai">
+                        <div class="avatar"><i class="fa-solid fa-robot"></i></div>
+                        <div class="msg-content">Chat history cleared. How can I help you now?</div>
+                    </div>
+                `;
+                chatHistory =[];
+            });
+
+            async function handleChat() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+
+                // Add User Message
+                appendMessage('user', text);
+                chatInput.value = '';
+                chatInput.style.height = '44px';
+                
+                // Add Typing Indicator
+                const typingId = 'typing-' + Date.now();
+                appendTypingIndicator(typingId);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                try {
+                    // Fetch from Pollinations API
+                    const model = chatModel.value;
+                    const url = `https://text.pollinations.ai/${encodeURIComponent(text)}?model=${model}`;
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error("API Error");
+                    
+                    const resultText = await response.text();
+                    
+                    // Remove Typing Indicator
+                    document.getElementById(typingId).remove();
+                    
+                    // Append AI Message with Typing Effect
+                    appendMessage('ai', resultText, true);
+
+                } catch (error) {
+                    document.getElementById(typingId).remove();
+                    appendMessage('ai', "Sorry, I encountered a network error. Please try again.");
+                }
+            }
+
+            function appendMessage(sender, text, animate = false) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${sender}`;
+                
+                const icon = sender === 'user' ? '<i class="fa-solid fa-user"></i>' : '<i class="fa-solid fa-robot"></i>';
+                
+                // Format text (basic line breaks)
+                const formattedText = text.replace(/\n/g, '<br>');
+
+                const contentId = 'content-' + Date.now();
+                
+                let actionsHtml = '';
+                if (sender === 'ai') {
+                    actionsHtml = `
+                        <div class="msg-actions">
+                            <button class="action-btn copy-btn" title="Copy"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                    `;
+                }
+
+                msgDiv.innerHTML = `
+                    <div class="avatar">${icon}</div>
+                    <div class="msg-content">
+                        <span id="${contentId}"></span>
+                        ${actionsHtml}
+                    </div>
+                `;
+                
+                chatBox.appendChild(msgDiv);
+
+                if (sender === 'ai') {
+                    // Copy button logic
+                    const copyBtn = msgDiv.querySelector('.copy-btn');
+                    copyBtn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(text);
+                        copyBtn.innerHTML = '<i class="fa-solid fa-check" style="color:var(--success)"></i>';
+                        setTimeout(() => copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>', 2000);
+                    });
+                }
+
+                const textSpan = document.getElementById(contentId);
+                
+                if (animate && sender === 'ai') {
+                    // Typing effect
+                    let i = 0;
+                    // To handle HTML correctly during typing, we inject raw text and convert newlines.
+                    // For a simpler approach, just dump the HTML if it contains tags, or simulate char by char.
+                    const speed = 15;
+                    function typeWriter() {
+                        if (i < text.length) {
+                            textSpan.innerHTML = text.substring(0, i+1).replace(/\n/g, '<br>');
+                            i++;
+                            chatBox.scrollTop = chatBox.scrollHeight;
+                            setTimeout(typeWriter, speed);
+                        }
+                    }
+                    typeWriter();
+                } else {
+                    textSpan.innerHTML = formattedText;
+                }
+                
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+
+            function appendTypingIndicator(id) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ai`;
+                msgDiv.id = id;
+                msgDiv.innerHTML = `
+                    <div class="avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div class="msg-content">
+                        <div class="typing-indicator">
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        </div>
+                    </div>
+                `;
+                chatBox.appendChild(msgDiv);
+            }
+
+
+            // --- 2. IMAGE GENERATION LOGIC ---
+            const btnImgGen = document.getElementById('generate-img');
+            const inputImgPrompt = document.getElementById('img-prompt');
+            const imgRatio = document.getElementById('img-ratio');
+            const imgQuality = document.getElementById('img-quality');
+            const imgPlaceholder = document.getElementById('img-placeholder');
+            const imgLoader = document.getElementById('img-loader');
+            const resultImg = document.getElementById('result-img');
+            const downloadImgBtn = document.getElementById('download-img');
+
+            let currentImgUrl = '';
+
+            btnImgGen.addEventListener('click', () => {
+                const prompt = inputImgPrompt.value.trim();
+                if (!prompt) return;
+
+                // UI setup
+                imgPlaceholder.style.display = 'none';
+                resultImg.style.display = 'none';
+                downloadImgBtn.style.display = 'none';
+                imgLoader.style.display = 'flex';
+
+                // Determine resolution
+                let width = 1024, height = 1024;
+                const ratio = imgRatio.value;
+                const qual = imgQuality.value; // Append quality keywords to prompt
+
+                if (ratio === '16:9') { width = 1920; height = 1080; }
+                if (ratio === '9:16') { width = 1080; height = 1920; }
+
+                // Add quality enhancements to prompt
+                let enhancedPrompt = prompt;
+                if (qual === '4k') enhancedPrompt += ", 4k resolution, highly detailed, masterpiece";
+                if (qual === '8k') enhancedPrompt += ", 8k resolution, ultra realistic, octane render, unreal engine 5";
+
+                const seed = Math.floor(Math.random() * 999999);
+                const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=${width}&height=${height}&seed=${seed}&nologo=true`;
+
+                currentImgUrl = url;
+
+                // Create new image object to track loading
+                const tempImg = new Image();
+                tempImg.crossOrigin = "Anonymous";
+                tempImg.onload = () => {
+                    imgLoader.style.display = 'none';
+                    resultImg.src = url;
+                    resultImg.style.display = 'block';
+                    setTimeout(() => resultImg.style.opacity = '1', 50);
+                    downloadImgBtn.style.display = 'flex';
+                };
+                tempImg.onerror = () => {
+                    imgLoader.style.display = 'none';
+                    imgPlaceholder.style.display = 'flex';
+                    imgPlaceholder.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:var(--accent)"></i> Generation Failed';
+                };
+                tempImg.src = url;
+            });
+
+            downloadImgBtn.addEventListener('click', () => {
+                if(currentImgUrl) downloadBlob(currentImgUrl, 'shivam-ai-image.jpg');
+            });
+
+
+            // --- 3. VIDEO GENERATION LOGIC (Simulated with advanced FX) ---
+            const btnVideoGen = document.getElementById('generate-video');
+            const inputVideoPrompt = document.getElementById('video-prompt');
+            const videoPlaceholder = document.getElementById('video-placeholder');
+            const videoLoader = document.getElementById('video-loader');
+            const videoStatus = document.getElementById('video-status');
+            const videoProgress = document.getElementById('video-progress');
+            const videoResult = document.getElementById('video-result');
+            const videoSimImg = document.getElementById('video-sim-img');
+            const downloadVideoBtn = document.getElementById('download-video');
+
+            let currentVideoFrameUrl = '';
+
+            btnVideoGen.addEventListener('click', () => {
+                const prompt = inputVideoPrompt.value.trim();
+                if (!prompt) return;
+
+                videoPlaceholder.style.display = 'none';
+                videoResult.style.display = 'none';
+                downloadVideoBtn.style.display = 'none';
+                videoLoader.style.display = 'flex';
+                videoProgress.style.width = '0%';
+
+                // Fake Progress sequence
+                const statuses =["Analyzing Scene...", "Rendering 3D Assets...", "Applying Cinematic Lighting...", "Finalizing Frames..."];
+                let step = 0;
+                
+                const progressInterval = setInterval(() => {
+                    step++;
+                    videoProgress.style.width = (step * 25) + '%';
+                    if(step < statuses.length) {
+                        videoStatus.innerText = statuses[step];
+                    }
+                    if(step >= 4) {
+                        clearInterval(progressInterval);
+                        finalizeVideoGeneration(prompt);
+                    }
+                }, 1500); // 6 seconds total loading
+            });
+
+            function finalizeVideoGeneration(prompt) {
+                // Fetch a stunning image from Pollinations to act as the video frame
+                const enhancedPrompt = prompt + ", cinematic movie still, 8k resolution, motion blur, highly detailed";
+                const seed = Math.floor(Math.random() * 999999);
+                const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=1920&height=1080&seed=${seed}&nologo=true`;
+
+                currentVideoFrameUrl = url;
+
+                const tempImg = new Image();
+                tempImg.onload = () => {
+                    videoLoader.style.display = 'none';
+                    videoSimImg.src = url;
+                    videoResult.style.display = 'block';
+                    downloadVideoBtn.style.display = 'flex';
+                };
+                tempImg.src = url;
+            }
+
+            downloadVideoBtn.addEventListener('click', () => {
+                if(currentVideoFrameUrl) downloadBlob(currentVideoFrameUrl, 'shivam-ai-video-frame.jpg');
+            });
+
+
+            // --- 4. AUDIO GENERATION LOGIC (StreamElements API) ---
+            const btnAudioGen = document.getElementById('generate-audio');
+            const inputAudioPrompt = document.getElementById('audio-prompt');
+            const voiceModel = document.getElementById('voice-model');
+            const audioLoader = document.getElementById('audio-loader');
+            const audioPlayerUi = document.getElementById('audio-player');
+            const realAudio = document.getElementById('real-audio');
+            const playBtn = document.getElementById('audio-play-btn');
+            const waveform = document.getElementById('waveform');
+            const downloadAudioBtn = document.getElementById('download-audio');
+
+            let currentAudioUrl = '';
+            let isPlaying = false;
+
+            // Generate fake waveform bars
+            for(let i=0; i<30; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                waveform.appendChild(bar);
+            }
+            const bars = document.querySelectorAll('.bar');
+
+            btnAudioGen.addEventListener('click', () => {
+                const text = inputAudioPrompt.value.trim();
+                if (!text) return;
+
+                audioPlayerUi.style.display = 'none';
+                audioLoader.style.display = 'flex';
+
+                const voice = voiceModel.value;
+                const url = `https://api.streamelements.com/kappa/v2/speech?voice=${voice}&text=${encodeURIComponent(text)}`;
+
+                currentAudioUrl = url;
+                realAudio.src = url;
+
+                realAudio.oncanplaythrough = () => {
+                    audioLoader.style.display = 'none';
+                    audioPlayerUi.style.display = 'flex';
+                };
+
+                realAudio.onerror = () => {
+                    audioLoader.style.display = 'none';
+                    alert("Audio generation failed. The text might be too long or contains unsupported characters.");
+                };
+                
+                // Force load
+                realAudio.load();
+            });
+
+            playBtn.addEventListener('click', () => {
+                if(realAudio.paused) {
+                    realAudio.play();
+                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    bars.forEach(b => {
+                        b.classList.add('active');
+                        b.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+                    });
+                } else {
+                    realAudio.pause();
+                    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    bars.forEach(b => b.classList.remove('active'));
+                }
+            });
+
+            realAudio.onended = () => {
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                bars.forEach(b => b.classList.remove('active'));
+            };
+
+            downloadAudioBtn.addEventListener('click', () => {
+                if(currentAudioUrl) {
+                    downloadBlob(currentAudioUrl, 'shivam-ai-voice.mp3');
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
